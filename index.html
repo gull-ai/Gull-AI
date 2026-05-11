@@ -254,9 +254,24 @@ async function sendMsg(){
 async function callAPI(){
   showTyping();
   try{
-    var r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:msgs,max_tokens:1000,temperature:0.7})});
-    var d=await r.json();var reply=d.choices[0].message.content;
-    msgs.push({role:'assistant',content:reply});removeTyping();addBubble('ai',reply);
+        var r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ messages: msgs })
+    });
+
+    if (!r.ok) {
+      throw new Error('API xətası: ' + r.status);
+    }
+
+    var d = await r.json();
+    var reply = d.choices[0].message.content;
+
+    msgs.push({role:'assistant',content:reply});
+    removeTyping();
+    addBubble('ai', reply);
   }catch(e){removeTyping();addBubble('ai',T[lang].err);}
 }
 
