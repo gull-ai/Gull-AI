@@ -18,6 +18,11 @@ export default async function handler(req, res) {
   try {
     const { messages } = req.body;
 
+    // Debug məlumatları
+    console.log("=== API Request Debug ===");
+    console.log("GROQ_API_KEY var?", !!process.env.GROQ_API_KEY);
+    console.log("Messages received:", JSON.stringify(messages));
+
     if (!messages) {
       return res.status(400).json({ error: 'Messages is required' });
     }
